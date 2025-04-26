@@ -1,0 +1,139 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* Font */
+  --font-body: 'Inter', 'sans-serif';
+  --font-functional: 'Roboto', 'arial';
+
+  /* Spacing */
+  --spacing: 4px;
+
+  /* Colors */
+	/* Purple Dark */
+	--color-purple-dark-1: #18111B;
+	--color-purple-dark-2: #1E1523;
+	--color-purple-dark-3: #3D224E;
+	--color-purple-dark-4: #3D224E;
+	--color-purple-dark-5: #48295C;
+	--color-purple-dark-6: #54346B;
+	--color-purple-dark-7: #664282;
+	--color-purple-dark-8: #8457AA;
+	--color-purple-dark-9: #8E4EC6;
+	--color-purple-dark-10: #9A5CD0;
+	--color-purple-dark-11: #D19DFF;
+	--color-purple-dark-12: #ECD9FA;
+
+	/* Purple Dark Light*/
+	--color-purple-dark-alpha-1: #B412F90B;
+	--color-purple-dark-alpha-2: #B744F714;
+	--color-purple-dark-alpha-3: #C150FF2D;
+	--color-purple-dark-alpha-4: #BB53FD42;
+	--color-purple-dark-alpha-5: #BE5CFD51;
+	--color-purple-dark-alpha-5: #BE5CFD51;
+	--color-purple-dark-alpha-6: #C16DFD61;
+	--color-purple-dark-alpha-7: #C378FD7A;
+	--color-purple-dark-alpha-8: #C47EFFA4;
+	--color-purple-dark-alpha-9: #B661FFC2;
+	--color-purple-dark-alpha-10: #BC6FFFCD;
+	--color-purple-dark-alpha-11: #D19DFF;	
+	--color-purple-dark-alpha-12: #F1DDFFFA;
+
+	/* Purple */
+	--color-purple-1: #FEFCFE;
+	--color-purple-2: #FBF7FE;
+	--color-purple-3: #F7EDFE;
+	--color-purple-4: #F2E2FC;
+	--color-purple-5: #EAD5F9;
+	--color-purple-6: #E0C4F4;
+	--color-purple-7: #D1AFEC;
+	--color-purple-8: #BE93E4;
+	--color-purple-9: #8E4EC6;
+	--color-purple-10: #8347B9;
+	--color-purple-11: #8145B5;
+	--color-purple-12: #402060;
+
+	/* Purple Alpha */
+	--color-purple-alpha-1: #AA00AA03;
+	--color-purple-alpha-2: #8000E008;
+	--color-purple-alpha-3: #8E00F112;
+	--color-purple-alpha-4: #8D00E51D;
+	--color-purple-alpha-5: #8000DB2A;
+	--color-purple-alpha-6: #7A01D03B;
+	--color-purple-alpha-7: #6D00C350;
+	--color-purple-alpha-8: #6600C06C;
+	--color-purple-alpha-9: #5C00ADB1;
+	--color-purple-alpha-10: #53009EB8;
+	--color-purple-alpha-11: #52009ABA;
+	--color-purple-alpha-12: #250049DF;
+
+	/* Mauve Dark */
+	--color-mauve-dark-1: #121113;
+	--color-mauve-dark-2: #1A191B;
+	--color-mauve-dark-3: #232225;
+	--color-mauve-dark-4: #2B292D;
+	--color-mauve-dark-5: #323035;
+	--color-mauve-dark-6: #3C393F;
+	--color-mauve-dark-7: #49474E;
+	--color-mauve-dark-8: #625F69;
+	--color-mauve-dark-9: #6F6D78;
+	--color-mauve-dark-10: #7C7A85;
+	--color-mauve-dark-11: #B5B2BC;
+	--color-mauve-dark-12: #EEEEF0;
+
+	/* Mauve Dark Alpha*/
+	--color-mauve-dark-alpha-1: #00000000;
+	--color-mauve-dark-alpha-2: #F5F4F609;
+	--color-mauve-dark-alpha-3: #EBEAF814;
+	--color-mauve-dark-alpha-4: #EEE5F81D;
+	--color-mauve-dark-alpha-5: #EFE6FE25;
+	--color-mauve-dark-alpha-6: #F1E6FD30;
+	--color-mauve-dark-alpha-7: #EEE9FF40;
+	--color-mauve-dark-alpha-8: #EEE7FF5D;
+	--color-mauve-dark-alpha-9: #EAE6FD6E;
+	--color-mauve-dark-alpha-10: #ECE9FD7D;
+	--color-mauve-dark-alpha-11: #F5F1FFB7;
+	--color-mauve-dark-alpha-12: #FDFDFFEF;
+
+	/* Mauve */
+	--color-mauve-1: #FDFCFD;
+	--color-mauve-2: #FAF9FB;
+	--color-mauve-3: #F2EFF3;
+	--color-mauve-4: #EAE7EC;
+	--color-mauve-5: #E3DFE6;
+	--color-mauve-6: #DBD8E0;
+	--color-mauve-7: #D0CDD7;
+	--color-mauve-8: #BCBAC7;
+	--color-mauve-9: #8E8C99;
+	--color-mauve-10: #84828E;
+	--color-mauve-11: #65636D;
+	--color-mauve-12: #211F26;
+
+	/* Mauve Alpha */
+	--color-mauve-alpha-1: #55005503;
+	--color-mauve-alpha-2: #2B005506;
+	--color-mauve-alpha-3: #30004010;
+	--color-mauve-alpha-4: #20003618;
+	--color-mauve-alpha-5: #20003820;
+	--color-mauve-alpha-6: #14003527;
+	--color-mauve-alpha-7: #10003332;
+	--color-mauve-alpha-8: #08003145;
+	--color-mauve-alpha-9: #05001D73;
+	--color-mauve-alpha-10: #0500197D;
+	--color-mauve-alpha-11: #0400119C;
+	--color-mauve-alpha-12: #020008E0;
+
+  /* Border radius */
+  --radius-full: 9999px;
+  --radius-xl: 1.5rem;
+
+	/* Breakpoints */
+	--breakpoint-xs: 480px;
+	--breakpoint-sm: 640px;
+	--breakpoint-md: 768px;
+	--breakpoint-lg: 1024px;
+	--breakpoint-xl: 1280px;
+	--breakpoint-2xl: 1536px;
+	--breakpoint-3xl: 1920px;
+}
