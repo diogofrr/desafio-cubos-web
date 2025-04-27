@@ -11,20 +11,20 @@ import reducer from './reducer';
 import initialState from './data';
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+	const [state, dispatch] = useReducer(reducer, initialState);
 
-  const saveUserData = (user: User) => {
-    dispatch({
-      type: actions.SAVE_USER_DATA,
-      payload: user,
-    });
-  };
+	const saveUserData = (user: User) => {
+		dispatch({
+			type: actions.SAVE_USER_DATA,
+			payload: user,
+		});
+	};
 
-  return (
-    <AuthContext.Provider value={{ state, saveUserData }}>
-      {children}
-    </AuthContext.Provider>
-  );
+	return (
+		<AuthContext.Provider value={{ state, saveUserData }}>
+			{children}
+		</AuthContext.Provider>
+	);
 };
 
 export default AuthProvider;

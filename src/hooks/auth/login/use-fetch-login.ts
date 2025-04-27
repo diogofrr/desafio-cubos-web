@@ -1,9 +1,11 @@
 import { useMutation } from '@tanstack/react-query';
 
-import authUser from '@/services/auth/login/auth-user';
+import authUser from '@/services/auth/auth-user';
 
-export const useFetchLogin = () => {
-  return useMutation({
-    mutationFn: authUser,
-  });
+const useFetchLogin = () => {
+	return useMutation({
+		mutationFn: authUser,
+	});
 };
+
+export { useFetchLogin };

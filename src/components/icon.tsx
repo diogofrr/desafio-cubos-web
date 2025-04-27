@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Image from 'next/image';
 
@@ -11,12 +10,12 @@ const Icon = ({ name, className }: IconProps) => {
   const iconPath = `/icons/${name}.svg`;
 
   return (
-    <Image 
-      src={iconPath} 
+    <Image
+      src={iconPath}
       alt={`${name} icon`}
-      className={`${className}`}
-			height={24}
-			width={24}
+      className={`${className} fill-current`}
+      height={24}
+      width={24}
     />
   );
 };
