@@ -1,55 +1,24 @@
 'use client'
 
 const useTheme = () => {
-	const setDarkMode = () => {
-		localStorage.setItem('theme', 'dark')
-		document.documentElement.classList.add('dark')
-	}
+  const changeTheme = () => {
+    const root = document.documentElement;
+    const isDark = root.classList.contains('dark');
+    
+    if (isDark) {
+      root.classList.remove('dark');
+      root.setAttribute('data-theme', 'light');
+      localStorage.setItem('theme', 'light');
+    } else {
+      root.classList.add('dark');
+      root.setAttribute('data-theme', 'dark');
+      localStorage.setItem('theme', 'dark');
+    }
+  };
 
-	const setLightMode = () => {
-		localStorage.setItem('theme', 'light')
-		document.documentElement.classList.remove('dark')
-	}
+  return {
+    changeTheme
+  };
+};
 
-	const loadTheme = () => {
-		const storedTheme = localStorage.getItem('theme');
-		const prefersDarkQuery = '(prefers-color-scheme: dark)';
-		const mediaQueryList = window.matchMedia(prefersDarkQuery);
-	
-		if (!storedTheme) {
-			const shouldUseDarkTheme = mediaQueryList.matches;
-			setDarkModeIf(shouldUseDarkTheme);
-			return;
-		}
-	
-		const isDarkTheme = storedTheme === 'dark';
-		setDarkModeIf(isDarkTheme);
-	}
-	
-	const setDarkModeIf = (shouldUseDarkTheme: boolean) => {
-		if (shouldUseDarkTheme) {
-			setDarkMode();
-		} else {
-			setLightMode();
-		}
-	}
-
-	const changeTheme = () => {
-		const theme = localStorage.getItem('theme')
-
-		if (theme === 'light') {
-			localStorage.setItem('theme', 'dark')
-			document.documentElement.classList.add('dark')
-		} else {
-			localStorage.setItem('theme', 'light')
-			document.documentElement.classList.remove('dark')
-		}
-	}
-
-	return {
-		changeTheme,
-		loadTheme
-	}
-}
-
-export { useTheme }
+export { useTheme };

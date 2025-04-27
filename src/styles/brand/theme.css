@@ -1,11 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wdth,wght@0,75..100,100..900;1,75..100,100..900&display=swap');
+
 @import 'tailwindcss';
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   /* Font */
-  --font-body: 'Inter', 'sans-serif';
-  --font-functional: 'Roboto', 'arial';
+  --font-body: "Inter", sans-serif;
+  --font-functional: "Roboto", sans-serif;
+	--font-special: "Montserrat", sans-serif;
 
   /* Spacing */
   --spacing: 4px;
@@ -136,4 +141,35 @@
 	--breakpoint-xl: 1280px;
 	--breakpoint-2xl: 1536px;
 	--breakpoint-3xl: 1920px;
+}
+
+
+/* Desativa transições durante o carregamento inicial */
+:root {
+  --transition-duration: 0s;
+}
+
+/* Habilita transições suaves após o carregamento */
+.theme-transition-ready {
+  --transition-duration: 0.2s;
+}
+
+/* Aplica transições a elementos que mudam com o tema */
+body,
+button,
+a,
+input,
+textarea,
+select,
+[class*="text-"],
+[class*="bg-"],
+[class*="border-"] {
+  transition: background-color var(--transition-duration) ease-in-out,
+              color var(--transition-duration) ease-in-out,
+              border-color var(--transition-duration) ease-in-out,
+              box-shadow var(--transition-duration) ease-in-out;
+}
+
+.dark\:block, .dark\:hidden, .block, .hidden {
+  transition: opacity var(--transition-duration) ease-in-out;
 }
