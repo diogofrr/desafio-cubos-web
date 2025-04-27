@@ -51,12 +51,12 @@ export default function CardMovie({
             </div>
           </div>
           <div className="p-4">
-            <h3 className="font-special font-semibold text-normal uppercase tracking-normal leading-none text-mauve-12 dark:text-mauve-dark-12 transform group-hover:-translate-y-1 transition-transform duration-300 ease-out">
+            <h3 className="font-special font-semibold text-normal uppercase tracking-normal leading-none text-mauve-dark-12 transform group-hover:-translate-y-1 transition-transform duration-300 ease-out">
               {title}
             </h3>
 
             <div className="max-h-0 group-hover:max-h-20 overflow-hidden opacity-0 group-hover:opacity-100 transition-all duration-300 ease-out mt-2">
-              <p className="font-special font-normal text-sm tracking-normal leading-tight text-mauve-11 dark:text-mauve-dark-11 break-words transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300 ease-out">
+              <p className="font-special font-normal text-sm tracking-normal leading-tight text-mauve-dark-11 break-words transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300 ease-out">
                 {genres.map((genre) => genre.name).join(', ')}
               </p>
             </div>
