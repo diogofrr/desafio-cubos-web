@@ -1,24 +1,17 @@
 'use client';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
-import type { ProviderProps } from '@/types/root';
-import { useLayoutEffect } from 'react';
-import { useTheme } from '@/hooks/use-theme';
+import AuthProvider from '@/contexts/auth-context/auth-provider';
+import { ProviderProps } from '@/types/root';
 
 export default function Provider({ children }: ProviderProps) {
   const queryClient = new QueryClient();
-	const { loadTheme } = useTheme()
-
-	useLayoutEffect(() => {
-		loadTheme()
-		console.log('loadTheme')
-	}, [loadTheme]);
-	
 
   return (
     <QueryClientProvider client={queryClient}>
-			{children}
+      <AuthProvider>
+      {children}
+      </AuthProvider>
     </QueryClientProvider>
   );
 }
