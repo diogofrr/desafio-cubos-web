@@ -32,13 +32,17 @@ const MovieDetails = ({ movieId }: MovieDetailsProps) => {
         <div className="hidden lg:block absolute inset-0 bg-mauve-3/30 dark:bg-mauve-dark-3/30 -z-10 h-[90%]"></div>
 
         <div className="lg:hidden flex justify-center">
-          <Image
-            src={movie.imageUrl}
-            alt={movie.title}
-            width={300}
-            height={450}
-            className="flex-shrink-0"
-          />
+          {movie.imageUrl !== '' ? (
+            <Image
+              src={movie.imageUrl}
+              alt={movie.title}
+              width={300}
+              height={450}
+              className="flex-shrink-0"
+            />
+          ) : (
+            <div className="w-[300px] h-[450px]	flex-shrink-0"></div>
+          )}
         </div>
 
         <MovieHeader title={movie.title} originalTitle={movie.originalTitle} />

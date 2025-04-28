@@ -19,7 +19,7 @@ const MoviesList = () => {
       <div className="p-4 sm:p-6 bg-mauve-alpha-3 dark:bg-mauve-dark-alpha-3 min-h-[768px] h-auto w-full">
         {isLoading ? (
           <ul className="flex flex-row flex-wrap gap-4 sm:gap-6 justify-center">
-            {Array.from({ length: 12 }).map((_, index) => (
+            {Array.from({ length: 10 }).map((_, index) => (
               <li key={index}>
                 <div className="relative w-[183px] sm:w-[235px] h-[281px] sm:h-[355px] overflow-hidden rounded-lg">
                   <Skeleton className="w-full h-full" />
