@@ -1,9 +1,5 @@
 import { ResponseData } from '@/types/globals';
-
-interface Genre {
-  id: string;
-  name: string;
-}
+import { Genre } from './get-genres';
 
 interface VoteStats {
   totalVotes: number;

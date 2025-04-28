@@ -1,13 +1,14 @@
 import { ResponseData } from '@/types/globals';
-import { Genre, VoteStats } from './list-movies';
+import { Genre, VoteStats } from './get-genres';
+import { Language } from './get-languages';
 
 interface GetMovieArgs {
   id: string;
 }
 
-interface Language {
+interface UserVote {
   id: string;
-  name: string;
+  score: number;
 }
 
 interface Movie {
@@ -28,11 +29,11 @@ interface Movie {
   language: Language;
   profit: number;
   votesAverage: VoteStats;
-  omitedUserVote: unknown[];
+  omitedUserVote: UserVote[];
 }
 
 interface GetMovieResponse extends ResponseData {
   result: Movie;
 }
 
-export { GetMovieArgs, Movie, Language, GetMovieResponse };
+export { GetMovieArgs, Movie, GetMovieResponse };

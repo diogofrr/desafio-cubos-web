@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import CircleRating from './circle-rating';
-import { Genre } from '@/types/movies/list-movies';
+import { Genre } from '@/types/movies/get-genres';
 import Image from 'next/image';
 import Link from 'next/link';
 

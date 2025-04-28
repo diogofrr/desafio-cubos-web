@@ -8,7 +8,7 @@ const useSearchAndFilterContext = () => {
 
   if (!context) {
     throw new Error(
-      'useSearchAndFilterContext deve ser usado dentro de um SearchAndFilterProvider'
+      'useSearchAndFilterContext must be used within an SearchAndFilterProvider'
     );
   }
 

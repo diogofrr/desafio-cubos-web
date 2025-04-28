@@ -1,11 +1,10 @@
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
 
-import { SessionLoader } from './components/session-loader';
 import { BackgroundWithGradient } from '@/components/background-with-gradient';
 
 import BackgroundImage from '@/../public/images/background.webp';
-import SearchAndFilterProvider from '@/contexts/search-and-filters-context/search-and-filter-provider';
+import DashboardProvider from './provider';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -14,15 +13,13 @@ interface DashboardLayoutProps {
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
     <BackgroundWithGradient imageUrl={BackgroundImage}>
-      <SearchAndFilterProvider>
-        <SessionLoader>
-          <div className="flex flex-col min-h-[768px] h-auto w-full">
-            <Header showLogoutButton={true} className="" />
-            {children}
-            <Footer className="mt-auto" />
-          </div>
-        </SessionLoader>
-      </SearchAndFilterProvider>
+      <DashboardProvider>
+        <div className="flex flex-col min-h-[768px] h-auto w-full">
+          <Header showLogoutButton={true} className="" />
+          {children}
+          <Footer className="mt-auto" />
+        </div>
+      </DashboardProvider>
     </BackgroundWithGradient>
   );
 }
