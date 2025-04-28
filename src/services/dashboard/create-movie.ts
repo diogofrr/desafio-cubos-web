@@ -11,7 +11,7 @@ import { clearSession, getAuthToken } from '@/lib/session';
 import uploadImage from './upload-image';
 
 export default async function createMovie(args: CreateMovieArgs) {
-  const url = `${process.env.API_URL}/movies/`;
+  const url = `${process.env.API_URL}/movies`;
   const authToken = await getAuthToken();
 
   const { image, ...data } = args;
@@ -25,6 +25,7 @@ export default async function createMovie(args: CreateMovieArgs) {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${authToken}`,
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(data),
     redirect: 'follow',
@@ -38,7 +39,10 @@ export default async function createMovie(args: CreateMovieArgs) {
     throw new Error(parsedData.message || requestsMessages.auth.login.error);
   }
 
-  await uploadImage({ id: parsedData.result.id, image });
+  console.log('parsedData', parsedData);
+  console.log('image', image);
+
+  await uploadImage({ id: parsedData.result, image });
 
   return parsedData;
 }

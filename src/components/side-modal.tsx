@@ -13,6 +13,7 @@ interface SideModalProps {
   onPrimaryAction?: () => void;
   onSecondaryAction?: () => void;
   isPrimaryLoading?: boolean;
+  isSecondaryDisabled?: boolean;
   primaryButtonType: 'submit' | 'button';
 }
 
@@ -27,6 +28,7 @@ const SideModal = ({
   onPrimaryAction,
   onSecondaryAction,
   isPrimaryLoading = false,
+  isSecondaryDisabled = false,
   primaryButtonType = 'submit',
 }: SideModalProps) => {
   useEffect(() => {
@@ -73,10 +75,7 @@ const SideModal = ({
   const showFooter = primaryActionLabel || secondaryActionLabel;
 
   return (
-    <div
-      className="fixed inset-0 z-50 bg-mauve-11/25 dark:bg-mauve-dark-11/25 animate-fadeIn"
-      onClick={onClose}
-    >
+    <div className="fixed inset-0 z-50 bg-mauve-11/25 dark:bg-mauve-dark-11/25 animate-fadeIn">
       <div
         className={`fixed top-0 h-full bg-mauve-3 dark:bg-mauve-dark-3 
                   w-full ${widthClasses[width]} right-0 
@@ -104,7 +103,11 @@ const SideModal = ({
           {showFooter && (
             <div className="border-t border-mauve-5 dark:border-mauve-dark-5 p-4 sm:p-6 flex justify-end gap-3">
               {secondaryActionLabel && (
-                <Button variant="secondary" onClick={handleSecondaryAction}>
+                <Button
+                  variant="secondary"
+                  disabled={isSecondaryDisabled}
+                  onClick={handleSecondaryAction}
+                >
                   {secondaryActionLabel}
                 </Button>
               )}

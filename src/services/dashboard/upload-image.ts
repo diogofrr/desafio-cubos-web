@@ -24,7 +24,6 @@ export default async function uploadImage(args: UploadImageArgs) {
   const requestOptions: RequestInit = {
     method: 'POST',
     headers: {
-      'Content-Type': 'multipart/form-data',
       Authorization: `Bearer ${authToken}`,
     },
     body: formData,

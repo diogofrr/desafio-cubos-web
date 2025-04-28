@@ -1,6 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useFetchCreateMovie } from './use-fetch-create-movie';
@@ -12,6 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { CreateMovieArgs, MovieStatus } from '@/types/movies/create-movie';
 import { convertTimeToMinutes } from '@/utils/format-hours-mask';
 import { formatCurrencyMask } from '@/utils/format-currency-mask';
+import { useSearchAndFilter } from '../search-and-filter/use-search-and-filter';
 
 const fileSizeLimit = 2 * 1024 * 1024;
 
@@ -28,7 +28,7 @@ export const createMovieSchema = z.object({
     .string()
     .nonempty({ message: 'Data de lançamento é obrigatória' }),
   duration: z.coerce.string().nonempty({ message: 'Duração é obrigatória' }),
-  popularity: z.coerce.number().optional(),
+  popularity: z.coerce.string().optional(),
   trailerUrl: z
     .string()
     .url({ message: 'URL do trailer inválida' })
@@ -58,8 +58,8 @@ export type CreateMovieFormData = z.infer<typeof createMovieSchema>;
 export const useCreateMovieForm = (onClose: () => void) => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const createMovieMutation = useFetchCreateMovie();
+  const { handleFetchMovies } = useSearchAndFilter();
   const { genres, languages } = useSelects();
-  const router = useRouter();
 
   const form = useForm<CreateMovieFormData>({
     resolver: zodResolver(createMovieSchema),
@@ -72,7 +72,7 @@ export const useCreateMovieForm = (onClose: () => void) => {
       revenue: formatCurrencyMask(''),
       releaseDate: '',
       duration: '',
-      popularity: undefined,
+      popularity: '',
       trailerUrl: '',
       status: 'RELEASED',
       language: '',
@@ -95,26 +95,25 @@ export const useCreateMovieForm = (onClose: () => void) => {
     setImagePreview(null);
   };
 
-  // Manipular envio do formulário
-  const onSubmit = async (data: CreateMovieFormData) => {
-    // Mapear os IDs de gênero para objetos de gênero completos
-    const selectedGenres =
-      genres?.filter((genre) => data.genreIds.includes(genre.id)) || [];
+  const formatStringToNumber = (value: string | undefined) => {
+    return value ? +value.replace(/\D/g, '') : 0;
+  };
 
+  const onSubmit = async (data: CreateMovieFormData) => {
     const movieData: CreateMovieArgs = {
       title: data.title,
       originalTitle: data.originalTitle,
-      subtitle: data.subtitle || undefined,
+      subtitle: data.subtitle ?? '',
       synopsis: data.synopsis,
-      budget: data.budget ? +data.budget.replace(/\D/, '') : 0,
-      revenue: data.revenue ? +data.revenue.replace(/\D/, '') : 0,
+      budget: formatStringToNumber(data.budget),
+      revenue: formatStringToNumber(data.revenue),
       releaseDate: data.releaseDate,
       duration: convertTimeToMinutes(data.duration),
-      popularity: data.popularity,
-      trailerUrl: data.trailerUrl || undefined,
+      popularity: formatStringToNumber(data.popularity),
+      trailerUrl: data.trailerUrl ?? '',
       status: data.status as unknown as MovieStatus,
       language: data.language,
-      genres: selectedGenres,
+      genres: data.genreIds ?? [],
       image: data.image,
     };
 
@@ -123,15 +122,14 @@ export const useCreateMovieForm = (onClose: () => void) => {
         form.reset();
         setImagePreview(null);
         onClose();
-        router.refresh();
+        handleFetchMovies();
       },
     });
   };
 
-  // Limpar formulário
   const resetForm = () => {
     form.reset();
-    setImagePreview(null);
+    handleClearImage();
   };
 
   return {

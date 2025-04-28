@@ -1,14 +1,19 @@
 'use client';
 
 import { FormProvider } from 'react-hook-form';
+
 import { SideModal } from '@/components/side-modal';
 import { Input } from '@/components/input';
 import { Select } from '@/components/select';
-import { Checkbox } from '@/components/checkbox';
-import Icon from '@/components/icon';
-import { useCreateMovieForm } from '@/hooks/dashboard/movies/use-create-movie-form';
-import { formatCurrencyMask } from '@/utils/format-currency-mask';
 import { Textarea } from '@/components/textarea';
+import Icon from '@/components/icon';
+import Image from 'next/image';
+
+import { useCreateMovieForm } from '@/hooks/dashboard/movies/use-create-movie-form';
+
+import { formatCurrencyMask } from '@/utils/format-currency-mask';
+import { GenresList } from './genre-list';
+import { formatStringToNumber } from '@/utils/format-string-to-number';
 
 interface CreateMovieModalProps {
   isOpen: boolean;
@@ -21,7 +26,9 @@ const CreateMovieModal = ({ handleClose, isOpen }: CreateMovieModalProps) => {
     imagePreview,
     handleImageChange,
     handleClearImage,
+    resetForm,
     onSubmit,
+    isSubmitting,
     genres,
     languages,
   } = useCreateMovieForm(handleClose);
@@ -31,11 +38,16 @@ const CreateMovieModal = ({ handleClose, isOpen }: CreateMovieModalProps) => {
       <SideModal
         primaryButtonType="submit"
         isOpen={isOpen}
-        onClose={handleClose}
+        onClose={() => {
+          handleClose();
+          resetForm();
+        }}
         title="Adicionar Filme"
         secondaryActionLabel="Cancelar"
-        primaryActionLabel="Adicionar filme"
+        primaryActionLabel={'Adicionar filme'}
         onPrimaryAction={onSubmit}
+        isPrimaryLoading={isSubmitting}
+        isSecondaryDisabled={isSubmitting}
       >
         <div className="p-4 overflow-y-auto h-full">
           <form onSubmit={onSubmit} className="space-y-6" noValidate>
@@ -46,10 +58,12 @@ const CreateMovieModal = ({ handleClose, isOpen }: CreateMovieModalProps) => {
               <div className="flex flex-col items-center justify-center border-2 border-dashed border-mauve-6 dark:border-mauve-dark-6 rounded-md p-4 h-48">
                 {imagePreview ? (
                   <div className="relative w-full h-full">
-                    <img
+                    <Image
                       src={imagePreview}
                       alt="Preview"
-                      className="w-full h-full object-contain"
+                      fill
+                      style={{ objectFit: 'contain' }}
+                      objectFit="contain"
                     />
                     <button
                       type="button"
@@ -57,13 +71,16 @@ const CreateMovieModal = ({ handleClose, isOpen }: CreateMovieModalProps) => {
                         handleClearImage();
                         form.trigger('image');
                       }}
+                      disabled={isSubmitting}
                       className="absolute cursor-pointer top-2 right-2 bg-mauve-12 dark:bg-mauve-dark-12 text-white p-1 rounded-full"
                     >
                       <Icon name="close" />
                     </button>
                   </div>
                 ) : (
-                  <label className="flex flex-col items-center justify-center cursor-pointer w-full h-full">
+                  <label
+                    className={`flex flex-col items-center justify-center w-full h-full ${isSubmitting ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                  >
                     <Icon name="upload" />
                     <span className="mt-2 text-sm text-mauve-11 dark:text-mauve-dark-11">
                       Clique para fazer upload
@@ -72,6 +89,7 @@ const CreateMovieModal = ({ handleClose, isOpen }: CreateMovieModalProps) => {
                       type="file"
                       accept="image/png, image/jpeg, image/jpg, image/webp"
                       className="hidden"
+                      disabled={isSubmitting}
                       onChange={(e) => {
                         const file = e.target.files?.[0];
                         if (!file) return;
@@ -99,6 +117,7 @@ const CreateMovieModal = ({ handleClose, isOpen }: CreateMovieModalProps) => {
                   label="Título"
                   placeholder="Digite o título do filme"
                   {...form.register('title')}
+                  disabled={isSubmitting}
                   errorMessage={form.formState.errors.title?.message}
                 />
                 <Input
@@ -106,6 +125,7 @@ const CreateMovieModal = ({ handleClose, isOpen }: CreateMovieModalProps) => {
                   label="Título Original"
                   placeholder="Digite o título original"
                   {...form.register('originalTitle')}
+                  disabled={isSubmitting}
                   errorMessage={form.formState.errors.originalTitle?.message}
                 />
               </div>
@@ -114,6 +134,7 @@ const CreateMovieModal = ({ handleClose, isOpen }: CreateMovieModalProps) => {
                 label="Subtítulo (opcional)"
                 placeholder="Digite o subtítulo"
                 {...form.register('subtitle')}
+                disabled={isSubmitting}
                 errorMessage={form.formState.errors.subtitle?.message}
               />
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -123,6 +144,7 @@ const CreateMovieModal = ({ handleClose, isOpen }: CreateMovieModalProps) => {
                   type="date"
                   className="date-input"
                   {...form.register('releaseDate')}
+                  disabled={isSubmitting}
                   errorMessage={form.formState.errors.releaseDate?.message}
                 />
                 <Input
@@ -131,6 +153,7 @@ const CreateMovieModal = ({ handleClose, isOpen }: CreateMovieModalProps) => {
                   type="time"
                   placeholder="Ex: 01:20"
                   {...form.register('duration')}
+                  disabled={isSubmitting}
                   errorMessage={form.formState.errors.duration?.message}
                 />
               </div>
@@ -141,6 +164,8 @@ const CreateMovieModal = ({ handleClose, isOpen }: CreateMovieModalProps) => {
                 id="synopsis"
                 label="Sinopse"
                 placeholder="Digite a sinopse do filme"
+                maxLength={255}
+                disabled={isSubmitting}
                 errorMessage={form.formState.errors.synopsis?.message}
                 {...form.register('synopsis')}
               />
@@ -157,6 +182,7 @@ const CreateMovieModal = ({ handleClose, isOpen }: CreateMovieModalProps) => {
                   type="text"
                   placeholder="$ 1000,00"
                   {...form.register('budget')}
+                  disabled={isSubmitting}
                   onChange={(e) => {
                     const formattedValue = formatCurrencyMask(e.target.value);
                     form.setValue('budget', formattedValue);
@@ -169,6 +195,7 @@ const CreateMovieModal = ({ handleClose, isOpen }: CreateMovieModalProps) => {
                   type="text"
                   placeholder="$500.000,00"
                   {...form.register('revenue')}
+                  disabled={isSubmitting}
                   onChange={(e) => {
                     const formattedValue = formatCurrencyMask(e.target.value);
                     form.setValue('revenue', formattedValue);
@@ -179,10 +206,14 @@ const CreateMovieModal = ({ handleClose, isOpen }: CreateMovieModalProps) => {
               <Input
                 id="popularity"
                 label="Popularidade (opcional)"
-                type="number"
-                step="0.1"
-                placeholder="Ex: 8.5"
+                type="string"
+                placeholder="Ex: 54.560"
                 {...form.register('popularity')}
+                disabled={isSubmitting}
+                onChange={(e) => {
+                  const formattedValue = formatStringToNumber(e.target.value);
+                  form.setValue('popularity', formattedValue);
+                }}
                 errorMessage={form.formState.errors.popularity?.message}
               />
               <Input
@@ -190,6 +221,7 @@ const CreateMovieModal = ({ handleClose, isOpen }: CreateMovieModalProps) => {
                 label="URL do Trailer (opcional)"
                 placeholder="Ex: https://youtube.com/watch?v=..."
                 {...form.register('trailerUrl')}
+                disabled={isSubmitting}
                 errorMessage={form.formState.errors.trailerUrl?.message}
               />
             </div>
@@ -203,6 +235,7 @@ const CreateMovieModal = ({ handleClose, isOpen }: CreateMovieModalProps) => {
                   id="status"
                   label="Status"
                   {...form.register('status')}
+                  disabled={isSubmitting}
                   error={form.formState.errors.status?.message}
                 >
                   <option value="RELEASED">Lançado</option>
@@ -213,6 +246,7 @@ const CreateMovieModal = ({ handleClose, isOpen }: CreateMovieModalProps) => {
                   id="language"
                   label="Idioma"
                   {...form.register('language')}
+                  disabled={isSubmitting}
                   error={form.formState.errors.language?.message}
                 >
                   <option value="">Selecione um idioma</option>
@@ -229,28 +263,7 @@ const CreateMovieModal = ({ handleClose, isOpen }: CreateMovieModalProps) => {
               <h3 className="text-md font-semibold text-mauve-11 dark:text-mauve-dark-11">
                 Gêneros
               </h3>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-48 overflow-y-auto p-2 border border-mauve-6 dark:border-mauve-dark-6 rounded">
-                {genres?.map((genre) => (
-                  <div key={genre.id} className="flex items-center">
-                    <Checkbox
-                      id={`genre-${genre.id}`}
-                      value={genre.id}
-                      {...form.register('genreIds')}
-                    />
-                    <label
-                      htmlFor={`genre-${genre.id}`}
-                      className="ml-2 text-xs sm:text-sm text-mauve-11 dark:text-mauve-dark-11 truncate"
-                    >
-                      {genre.name}
-                    </label>
-                  </div>
-                ))}
-              </div>
-              {form.formState.errors.genreIds && (
-                <span className="text-error text-sm">
-                  {form.formState.errors.genreIds.message}
-                </span>
-              )}
+              <GenresList genres={genres} disabled={isSubmitting} />
             </div>
           </form>
         </div>
