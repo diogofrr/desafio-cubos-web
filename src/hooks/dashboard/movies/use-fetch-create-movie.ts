@@ -6,7 +6,7 @@ import createMovie from '@/services/dashboard/create-movie';
 import { CreateMovieArgs } from '@/types/movies/create-movie';
 import { requestsMessages } from '@/constants/requests-messages';
 
-export const useFetchCreateMovie = () => {
+const useFetchCreateMovie = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -16,11 +16,16 @@ export const useFetchCreateMovie = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['movies'] });
-      toast.success(requestsMessages.movies.createMovie.success);
+      toast.success('Sucesso!', {
+        description: requestsMessages.movies.createMovie.success,
+      });
     },
     onError: (error: Error) => {
-      toast.error(requestsMessages.movies.createMovie.error);
+      toast.error('Erro!', {
+        description: requestsMessages.movies.createMovie.error,
+      });
       console.error(error.message);
     },
   });
 };
+export { useFetchCreateMovie };

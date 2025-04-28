@@ -38,6 +38,10 @@ const requestsMessages = {
       success: 'Filme atualizado com sucesso!',
       error: 'Erro ao atualizar filme. Tente novamente mais tarde.',
     },
+    deleteMovie: {
+      success: 'Filme foi excluído com sucesso!',
+      error: 'Erro ao excluir filme. Tente novamente mais tarde.',
+    },
   },
 };
 

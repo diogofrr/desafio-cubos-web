@@ -9,7 +9,7 @@ import { MovieInfo } from './movie-info';
 import { MovieFinances } from './movie-finances';
 import { MovieTrailer } from './movie-trailer';
 import { MovieSkeleton } from './movie-skeleton';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 interface MovieDetailsProps {
   movieId: string;
@@ -17,13 +17,14 @@ interface MovieDetailsProps {
 
 const MovieDetails = ({ movieId }: MovieDetailsProps) => {
   const { movie, isLoading, error } = useMovieDetails({ movieId });
+  const { push } = useRouter();
 
   if (isLoading) {
     return <MovieSkeleton />;
   }
 
   if (error || !movie) {
-    return <>{redirect('/not-found')}</>;
+    return <>{push('/not-found')}</>;
   }
 
   return (
@@ -41,22 +42,30 @@ const MovieDetails = ({ movieId }: MovieDetailsProps) => {
               className="flex-shrink-0"
             />
           ) : (
-            <div className="w-[300px] h-[450px]	flex-shrink-0"></div>
+            <div className="w-[300px] h-[450px]	flex-shrink-0 bg-mauve-1 dark:bg-mauve-dark-1"></div>
           )}
         </div>
 
-        <MovieHeader title={movie.title} originalTitle={movie.originalTitle} />
+        <MovieHeader
+          id={movie.id}
+          title={movie.title}
+          originalTitle={movie.originalTitle}
+        />
 
         <div className="flex flex-col lg:flex-row gap-6">
           <div className="hidden lg:block flex-shrink-0 relative z-10">
             <div className="relative">
-              <Image
-                src={movie.imageUrl}
-                alt={movie.title}
-                width={365}
-                height={540}
-                className="flex-shrink-0 rounded-sm shadow-lg"
-              />
+              {movie.imageUrl !== '' ? (
+                <Image
+                  src={movie.imageUrl}
+                  alt={movie.title}
+                  width={365}
+                  height={540}
+                  className="flex-shrink-0 rounded-sm shadow-lg"
+                />
+              ) : (
+                <div className="w-[300px] h-[450px] rounded-sm	flex-shrink-0 bg-mauve-1 dark:bg-mauve-dark-1"></div>
+              )}
             </div>
           </div>
 
@@ -65,7 +74,7 @@ const MovieDetails = ({ movieId }: MovieDetailsProps) => {
               totalVotes={movie.votesAverage.totalVotes}
               averageScore={movie.votesAverage.averageScore}
               subtitle={movie.subtitle || ''}
-              popularity={movie.popularity ?? '--'}
+              popularity={movie.popularity ?? '0'}
             />
 
             <div className="flex flex-col xl:flex-row gap-6">

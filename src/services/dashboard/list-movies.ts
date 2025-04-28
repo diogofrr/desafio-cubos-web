@@ -32,9 +32,7 @@ export default async function getMovies(filters: ListMoviesArgs) {
     };
 
     const response = await fetch(requestUrl, requestOptions);
-    console.error('Error: 1', response);
     const parsedData: ListMoviesResponse = await response.json();
-    console.error('Error: 2', parsedData);
 
     if (!isValidResponse(response.status)) {
       throw new Error(parsedData.message);

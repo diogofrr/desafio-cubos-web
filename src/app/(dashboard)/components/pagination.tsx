@@ -16,15 +16,12 @@ const Pagination = () => {
   const hasPrevious = !state.movies.pagination.hasPrevious;
   const hasNext = !state.movies.pagination.hasNext;
 
-  // Lógica para determinar quais páginas mostrar
   const renderPageButtons = (isMobile: boolean) => {
     const pageButtons = [];
     const maxButtons = isMobile ? 2 : 4;
 
-    // Começa a renderizar a partir da página atual
     let startRender = Math.max(1, currentPage - Math.floor(maxButtons / 2));
 
-    // Ajusta o início se estiver perto do final
     if (startRender + maxButtons > totalPages) {
       startRender = Math.max(1, totalPages - maxButtons + 1);
     }
@@ -57,7 +54,6 @@ const Pagination = () => {
         <Icon name="chevron-left" />
       </Button>
 
-      {/* Botões de paginação para desktop */}
       <div className="hidden md:flex flex-row gap-3">
         {renderPageButtons(false)}
 
@@ -68,7 +64,6 @@ const Pagination = () => {
         )}
       </div>
 
-      {/* Botões de paginação para mobile */}
       <div className="flex md:hidden flex-row gap-3">
         {renderPageButtons(true)}
 

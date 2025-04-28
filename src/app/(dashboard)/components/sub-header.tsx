@@ -53,12 +53,12 @@ export default function SubHeader() {
 
       <FiltersModal
         isOpen={filterModalIsOpen}
-        onClose={handleCloseFilterModal}
+        handleClose={handleCloseFilterModal}
       />
 
       <CreateMovieModal
-        handleClose={handleCloseCreateMovieModal}
         isOpen={createMovieModalIsOpen}
+        handleClose={handleCloseCreateMovieModal}
       />
     </div>
   );

@@ -33,16 +33,20 @@ export default function CardMovie({
 
         <div className="relative w-full h-full overflow-hidden z-10">
           <div className="w-full h-full overflow-hidden">
-            <Image
-              src={posterUrl}
-              alt={title}
-              width={183}
-              height={281}
-              className={`w-full h-full object-cover transition-all duration-300 ease-out ${
-                isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
-              } group-hover:scale-105`}
-              onLoad={() => setIsLoaded(true)}
-            />
+            {posterUrl !== '' ? (
+              <Image
+                src={posterUrl}
+                alt={title}
+                width={183}
+                height={281}
+                className={`w-full h-full object-cover transition-all duration-300 ease-out ${
+                  isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
+                } group-hover:scale-105`}
+                onLoad={() => setIsLoaded(true)}
+              />
+            ) : (
+              <div className="w-full h-full bg-mauve-1 dark:bg-mauve-dark-1"></div>
+            )}
             {!isLoaded && (
               <div className="absolute inset-0 bg-mauve-3 dark:bg-mauve-dark-3 animate-pulse" />
             )}

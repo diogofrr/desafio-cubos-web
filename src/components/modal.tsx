@@ -3,9 +3,10 @@ import { ReactNode, useEffect } from 'react';
 interface ModalProps {
   children: ReactNode;
   isOpen: boolean;
+  className?: string;
 }
 
-const Modal = ({ children, isOpen }: ModalProps) => {
+const Modal = ({ children, isOpen, className = '' }: ModalProps) => {
   useEffect(() => {
     if (isOpen) {
       const scrollY = window.scrollY;
@@ -32,7 +33,9 @@ const Modal = ({ children, isOpen }: ModalProps) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-mauve-11/25 dark:bg-mauve-dark-11/25 animate-fadeIn">
+    <div
+      className={`fixed inset-0 z-50 overflow-y-auto bg-mauve-11/25 dark:bg-mauve-dark-11/25 animate-fadeIn ${className}`}
+    >
       <div className="h-screen w-screen px-0 flex items-center justify-center">
         <div
           className="bg-mauve-3 dark:bg-mauve-dark-3 rounded-none sm:rounded-sm p-6 
