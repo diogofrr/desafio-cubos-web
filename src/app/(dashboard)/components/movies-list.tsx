@@ -11,6 +11,7 @@ const MoviesList = () => {
 
   useEffect(() => {
     handleFetchMovies();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -36,6 +37,7 @@ const MoviesList = () => {
               return (
                 <li key={movie.id}>
                   <CardMovie
+                    id={movie.id}
                     title={movie.title}
                     posterUrl={movie.imageUrl}
                     rating={movie.voteStats.averageScore}
