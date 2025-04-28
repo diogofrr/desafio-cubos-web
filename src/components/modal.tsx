@@ -3,10 +3,9 @@ import { ReactNode, useEffect } from 'react';
 interface ModalProps {
   children: ReactNode;
   isOpen: boolean;
-  onClose: () => void;
 }
 
-const Modal = ({ children, isOpen, onClose }: ModalProps) => {
+const Modal = ({ children, isOpen }: ModalProps) => {
   useEffect(() => {
     if (isOpen) {
       const scrollY = window.scrollY;
@@ -33,17 +32,16 @@ const Modal = ({ children, isOpen, onClose }: ModalProps) => {
   if (!isOpen) return null;
 
   return (
-    <div
-      className="fixed inset-0 z-50 bg-mauve-11/25 dark:bg-mauve-dark-11/25 animate-fadeIn"
-      onClick={onClose}
-    >
-      <div
-        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
-                  bg-mauve-3 dark:bg-mauve-dark-3 rounded-lg p-6 
-                  animate-zoomIn"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {children}
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-mauve-11/25 dark:bg-mauve-dark-11/25 animate-fadeIn">
+      <div className="h-screen w-screen px-0 flex items-center justify-center">
+        <div
+          className="bg-mauve-3 dark:bg-mauve-dark-3 rounded-none sm:rounded-sm p-6 
+                    w-full h-screen sm:h-auto sm:max-h-[90vh] sm:min-h-0
+                    sm:max-w-md sm:my-8 overflow-y-auto"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {children}
+        </div>
       </div>
     </div>
   );

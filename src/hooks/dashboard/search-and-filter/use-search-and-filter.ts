@@ -32,12 +32,36 @@ const useSearchAndFilter = () => {
           : state.search || undefined,
       page: overrides.page !== undefined ? overrides.page : state.page,
       limit: state.limit,
-      minDuration: state.minDuration || undefined,
-      maxDuration: state.maxDuration || undefined,
-      startDate: state.startDate || undefined,
-      endDate: state.endDate || undefined,
-      languageId: state.languageId || undefined,
-      genresId: state.genreIds.length ? state.genreIds.join(',') : undefined,
+      minDuration:
+        overrides.minDuration !== undefined
+          ? overrides.minDuration
+          : state.minDuration > 0
+            ? state.minDuration
+            : undefined,
+      maxDuration:
+        overrides.maxDuration !== undefined
+          ? overrides.maxDuration
+          : state.maxDuration > 0
+            ? state.maxDuration
+            : undefined,
+      startDate:
+        overrides.startDate !== undefined
+          ? overrides.startDate
+          : state.startDate || undefined,
+      endDate:
+        overrides.endDate !== undefined
+          ? overrides.endDate
+          : state.endDate || undefined,
+      languageId:
+        overrides.languageId !== undefined
+          ? overrides.languageId
+          : state.languageId || undefined,
+      genreIds:
+        overrides.genreIds !== undefined
+          ? overrides.genreIds
+          : state.genreIds.length
+            ? state.genreIds.join(',')
+            : undefined,
     }),
     [
       state.genreIds,
@@ -85,11 +109,21 @@ const useSearchAndFilter = () => {
     [saveMovies, startLoading, stopLoading]
   );
 
-  const handleFetchMovies = useCallback(async () => {
-    const filters = buildFilters();
-    initialFetchDoneRef.current = true;
-    return await fetchData(filters);
-  }, [buildFilters, fetchData]);
+  const handleFetchMovies = useCallback(
+    async (filters?: ListMoviesArgs) => {
+      let fetchFilters;
+
+      if (!filters) {
+        fetchFilters = buildFilters();
+      } else {
+        fetchFilters = filters;
+      }
+
+      initialFetchDoneRef.current = true;
+      return await fetchData(fetchFilters);
+    },
+    [buildFilters, fetchData]
+  );
 
   const handleSearchContent = useCallback(
     (searchTerm: string, debounceTime = 500) => {

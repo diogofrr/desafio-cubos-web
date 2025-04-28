@@ -31,6 +31,16 @@ const MoviesList = () => {
               </li>
             ))}
           </ul>
+        ) : state.movies?.data.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-[500px] text-center">
+            <h2 className="text-xl sm:text-2xl font-semibold text-mauve-11 dark:text-mauve-dark-11 mb-2">
+              Nenhum filme encontrado
+            </h2>
+            <p className="text-sm sm:text-base text-mauve-10 dark:text-mauve-dark-10 max-w-md">
+              Tente ajustar os filtros ou realizar uma nova busca para encontrar
+              o que procura.
+            </p>
+          </div>
         ) : (
           <ul className="flex flex-row flex-wrap gap-4 sm:gap-6 justify-center">
             {state.movies?.data.map((movie) => {
@@ -50,7 +60,9 @@ const MoviesList = () => {
         )}
       </div>
       <div className="flex justify-center mt-4 mb-6">
-        {!isLoading && <Pagination />}
+        {!isLoading && state.movies && state.movies.data.length > 0 && (
+          <Pagination />
+        )}
       </div>
     </main>
   );

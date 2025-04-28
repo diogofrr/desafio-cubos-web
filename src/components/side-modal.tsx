@@ -13,6 +13,7 @@ interface SideModalProps {
   onPrimaryAction?: () => void;
   onSecondaryAction?: () => void;
   isPrimaryLoading?: boolean;
+  primaryButtonType: 'submit' | 'button';
 }
 
 const SideModal = ({
@@ -26,6 +27,7 @@ const SideModal = ({
   onPrimaryAction,
   onSecondaryAction,
   isPrimaryLoading = false,
+  primaryButtonType = 'submit',
 }: SideModalProps) => {
   useEffect(() => {
     if (isOpen) {
@@ -85,7 +87,9 @@ const SideModal = ({
       >
         <div className="flex flex-col h-full">
           <div className="flex justify-between items-center p-4 sm:p-6 pb-3 border-b border-mauve-5 dark:border-mauve-dark-5">
-            <h2 className="text-lg font-medium">{title}</h2>
+            <h2 className="text-mauve-11 dark:text-mauve-dark-11 font-bold font-functional text-2xl">
+              {title}
+            </h2>
             <button
               onClick={onClose}
               className="p-2 cursor-pointer rounded-full hover:bg-mauve-5 dark:hover:bg-mauve-dark-5 transition-colors"
@@ -107,6 +111,7 @@ const SideModal = ({
               {primaryActionLabel && (
                 <Button
                   variant="primary"
+                  type={primaryButtonType}
                   onClick={onPrimaryAction}
                   disabled={isPrimaryLoading}
                 >

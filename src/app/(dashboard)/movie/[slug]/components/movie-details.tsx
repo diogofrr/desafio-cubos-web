@@ -65,6 +65,7 @@ const MovieDetails = ({ movieId }: MovieDetailsProps) => {
               totalVotes={movie.votesAverage.totalVotes}
               averageScore={movie.votesAverage.averageScore}
               subtitle={movie.subtitle || ''}
+              popularity={movie.popularity ?? '--'}
             />
 
             <div className="flex flex-col xl:flex-row gap-6">

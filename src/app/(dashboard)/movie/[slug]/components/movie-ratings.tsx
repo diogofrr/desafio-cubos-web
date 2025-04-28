@@ -3,6 +3,7 @@ import CircleRating from '@/app/(dashboard)/components/circle-rating';
 
 interface MovieRatingsProps {
   totalVotes: number;
+  popularity: string | number;
   averageScore: number;
   subtitle: string;
 }
@@ -10,6 +11,7 @@ interface MovieRatingsProps {
 const MovieRatings = ({
   totalVotes,
   averageScore,
+  popularity,
   subtitle,
 }: MovieRatingsProps) => {
   return (
@@ -22,7 +24,7 @@ const MovieRatings = ({
           title="Popularidade"
           titleClassName="text-xs"
           type="info"
-          data={totalVotes}
+          data={popularity}
           containerClassName="h-fit flex-1 md:flex-none md:w-[calc(50%-52px)] lg:w-auto"
         />
         <GridCard

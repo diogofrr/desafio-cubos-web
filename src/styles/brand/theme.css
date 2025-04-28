@@ -193,6 +193,10 @@
   --transition-duration: 0.2s;
 }
 
+.time-input::-webkit-calendar-picker-indicator {
+  display: none;
+}
+
 /* Aplica transições a elementos que mudam com o tema */
 body,
 button,
@@ -354,4 +358,30 @@ select,
 
 .animate-slideFromRight {
   animation: slideInFromRight 0.3s ease-out forwards;
+}
+
+/* Adicione estas regras ao final do arquivo theme.css */
+
+/* Reset para inputs de data e hora */
+input[type='date'],
+input[type='time'] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: relative;
+}
+
+/* Remove o ícone de calendário no Chrome */
+input[type='date']::-webkit-calendar-picker-indicator,
+input[type='time']::-webkit-calendar-picker-indicator {
+  background: transparent;
+  color: transparent;
+  cursor: pointer;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+  z-index: 1;
 }

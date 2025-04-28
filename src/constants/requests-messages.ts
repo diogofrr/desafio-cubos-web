@@ -26,6 +26,18 @@ const requestsMessages = {
       success: null,
       error: 'Erro ao obter idiomas. Tente novamente mais tarde.',
     },
+    uploadImage: {
+      success: null,
+      error: 'Erro ao fazer upload da imagem. Tente novamente mais tarde.',
+    },
+    createMovie: {
+      success: 'Filme criado com sucesso!',
+      error: 'Erro ao criar filme. Tente novamente mais tarde.',
+    },
+    updateMovie: {
+      success: 'Filme atualizado com sucesso!',
+      error: 'Erro ao atualizar filme. Tente novamente mais tarde.',
+    },
   },
 };
 

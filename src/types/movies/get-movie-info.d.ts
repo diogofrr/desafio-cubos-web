@@ -17,6 +17,7 @@ interface Movie {
   subtitle: string | null;
   originalTitle: string;
   synopsis: string;
+  popularity: number | null;
   budget: string;
   revenue: string;
   releaseDate: string;

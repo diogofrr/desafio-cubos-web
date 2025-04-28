@@ -22,7 +22,7 @@ interface ListMoviesArgs {
   startDate?: string;
   endDate?: string;
   languageId?: string;
-  genresId?: string;
+  genreIds?: string;
   search?: string;
 }
 
