@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { FormProvider } from 'react-hook-form';
 import { Modal } from '@/components/modal';
 import { Button } from '@/components/button';
@@ -12,18 +11,29 @@ import { useFiltersForm } from '@/hooks/dashboard/search-and-filter/use-filters-
 
 interface FiltersModalProps {
   isOpen: boolean;
-  onClose: () => void;
+  handleClose: () => void;
 }
 
-const FiltersModal = ({ isOpen, onClose }: FiltersModalProps) => {
-  const { form, onSubmit, handleResetFilters, genres, languages } =
-    useFiltersForm();
-  const [showGenres, setShowGenres] = useState(false);
+const FiltersModal = ({ isOpen, handleClose }: FiltersModalProps) => {
+  const {
+    form,
+    onSubmit,
+    genres,
+    languages,
+    showGenres,
+    handleToggleGenres,
+    getInitialValues,
+  } = useFiltersForm();
 
   const handleSubmit = form.handleSubmit((data) => {
     onSubmit(data);
-    onClose();
+    handleClose();
   });
+
+  const handleResetValues = () => {
+    form.reset(getInitialValues());
+    handleClose();
+  };
 
   return (
     <Modal isOpen={isOpen}>
@@ -34,7 +44,10 @@ const FiltersModal = ({ isOpen, onClose }: FiltersModalProps) => {
           </h2>
           <button
             type="button"
-            onClick={onClose}
+            onClick={() => {
+              handleResetValues();
+              handleClose();
+            }}
             className="cursor-pointer hover:bg-mauve-9/50 hover:dark:bg-mauve-dark-9/50 rounded-full p-1"
           >
             <Icon name="close" />
@@ -120,7 +133,7 @@ const FiltersModal = ({ isOpen, onClose }: FiltersModalProps) => {
                   type="button"
                   variant="primary"
                   className="w-full sm:w-auto text-sm"
-                  onClick={() => setShowGenres(!showGenres)}
+                  onClick={handleToggleGenres}
                 >
                   {showGenres ? 'Esconder' : 'Mostrar todos'}
                 </Button>
@@ -153,8 +166,8 @@ const FiltersModal = ({ isOpen, onClose }: FiltersModalProps) => {
                 variant="secondary"
                 className="w-full sm:w-auto"
                 onClick={() => {
-                  handleResetFilters();
-                  onClose();
+                  handleClose();
+                  handleResetValues();
                 }}
               >
                 Cancelar

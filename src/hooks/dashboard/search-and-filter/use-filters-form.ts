@@ -10,6 +10,7 @@ import {
   convertTimeToMinutes,
   convertMinutesToTimeString,
 } from '@/utils/format-hours-mask';
+import { useState } from 'react';
 
 export const filtersSchema = z
   .object({
@@ -30,7 +31,7 @@ export const filtersSchema = z
       return true;
     },
     {
-      message: 'A duração máxima deve ser maior que a duração mínima',
+      message: 'Duração inválida',
       path: ['maxDuration'],
     }
   )
@@ -44,7 +45,7 @@ export const filtersSchema = z
       return true;
     },
     {
-      message: 'A data final deve ser posterior à data inicial',
+      message: 'Data inválida',
       path: ['endDate'],
     }
   );
@@ -62,24 +63,31 @@ export const useFiltersForm = () => {
     changeGenreIds,
     changePage,
   } = useSearchAndFilterContext();
+  const [showGenres, setShowGenres] = useState(false);
   const { genres, languages } = useSelects();
   const { handleFetchMovies } = useSearchAndFilter();
 
+  const getInitialValues = () => ({
+    minDuration: state.minDuration
+      ? convertMinutesToTimeString(state.minDuration)
+      : '',
+    maxDuration: state.maxDuration
+      ? convertMinutesToTimeString(state.maxDuration)
+      : '',
+    startDate: state.startDate || '',
+    endDate: state.endDate || '',
+    languageId: state.languageId || '',
+    genreIds: state.genreIds || [],
+  });
+
   const form = useForm<FiltersFormData>({
     resolver: zodResolver(filtersSchema),
-    defaultValues: {
-      minDuration: state.minDuration
-        ? convertMinutesToTimeString(state.minDuration)
-        : '',
-      maxDuration: state.maxDuration
-        ? convertMinutesToTimeString(state.maxDuration)
-        : '',
-      startDate: state.startDate || '',
-      endDate: state.endDate || '',
-      languageId: state.languageId || '',
-      genreIds: state.genreIds || [],
-    },
+    defaultValues: getInitialValues(),
   });
+
+  const handleToggleGenres = () => {
+    setShowGenres(true);
+  };
 
   const onSubmit = (data: FiltersFormData) => {
     const minDurationMinutes = convertTimeToMinutes(data.minDuration || '');
@@ -96,7 +104,6 @@ export const useFiltersForm = () => {
     const filters = {
       page: 1,
       limit: state.limit,
-
       minDuration: minDurationMinutes || undefined,
       maxDuration: maxDurationMinutes || undefined,
       startDate: data.startDate || undefined,
@@ -107,8 +114,6 @@ export const useFiltersForm = () => {
           ? data.genreIds.join(',')
           : undefined,
     };
-
-    console.log(filters);
 
     handleFetchMovies(filters);
   };
@@ -122,22 +127,18 @@ export const useFiltersForm = () => {
     changeGenreIds([]);
     changePage(1);
 
-    form.reset({
-      minDuration: '',
-      maxDuration: '',
-      startDate: '',
-      endDate: '',
-      languageId: '',
-      genreIds: [],
-    });
+    form.reset(getInitialValues());
   };
 
   return {
     form,
     onSubmit,
-    handleResetFilters,
     genres,
     languages,
     filtersSchema,
+    showGenres,
+    getInitialValues,
+    handleResetFilters,
+    handleToggleGenres,
   };
 };
