@@ -2,7 +2,7 @@ const requestsMessages = {
   auth: {
     login: {
       success: 'Login realizado com sucesso!',
-      error: 'Erro ao realizar login. Tente novamente mais tarde.',
+      error: 'Verifique seu e-mail e senha e tente novamente.',
     },
     register: {
       success: 'Cadastro realizado com sucesso!',
