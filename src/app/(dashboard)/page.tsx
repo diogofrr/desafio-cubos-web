@@ -1,4 +1,5 @@
 import { MoviesList } from './components/movies-list';
+import { NotificationBell } from './components/notification-bell';
 import SubHeader from './components/sub-header';
 
 export default function Home() {
@@ -6,6 +7,7 @@ export default function Home() {
     <>
       <SubHeader />
       <MoviesList />
+      <NotificationBell />
     </>
   );
 }
