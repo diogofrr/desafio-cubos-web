@@ -1,7 +1,8 @@
 'use client';
 
 import { Button } from '@/components/button';
-import Icon from '@/components/icon';
+import ChevronLeft from '@/components/icons/chevron-left';
+import ChevronRight from '@/components/icons/chevron-right';
 import { useSearchAndFilter } from '@/hooks/dashboard/search-and-filter/use-search-and-filter';
 
 const Pagination = () => {
@@ -51,7 +52,7 @@ const Pagination = () => {
         disabled={hasPrevious}
         onClick={() => void handleChangePage(currentPage - 1)}
       >
-        <Icon name="chevron-left" />
+        <ChevronLeft />
       </Button>
 
       <div className="hidden md:flex flex-row gap-3">
@@ -79,7 +80,7 @@ const Pagination = () => {
         disabled={hasNext}
         onClick={() => void handleChangePage(currentPage + 1)}
       >
-        <Icon name="chevron-right" />
+        <ChevronRight />
       </Button>
     </nav>
   );

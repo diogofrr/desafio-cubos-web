@@ -10,10 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { CreateMovieArgs, MovieStatus } from '@/types/movies/create-movie';
 import { convertTimeToMinutes } from '@/utils/format-hours-mask';
-import {
-  formatCurrencyMask,
-  parseCurrencyToNumber,
-} from '@/utils/format-currency-mask';
+import { formatCurrencyMask } from '@/utils/format-currency-mask';
 import { formatStringToNumber } from '@/utils/format-string-to-number';
 import { useSearchAndFilter } from '../search-and-filter/use-search-and-filter';
 
@@ -59,17 +56,45 @@ export const createMovieSchema = z
   })
   .refine(
     (data) => {
+      if (data.status === 'RELEASED') {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const releaseDateParts = data.releaseDate.split('-').map(Number);
+        const releaseDate = new Date(
+          releaseDateParts[0],
+          releaseDateParts[1] - 1,
+          releaseDateParts[2]
+        );
+
+        return releaseDate < today;
+      }
+
+      return true;
+    },
+    {
+      message:
+        'Para filmes lançados, a data de lançamento deve ser no passado.',
+      path: ['releaseDate'],
+    }
+  )
+  .refine(
+    (data) => {
       if (data.status === 'PENDING') {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
-        const releaseDate = new Date(data.releaseDate);
+        const releaseDateParts = data.releaseDate.split('-').map(Number);
+        const releaseDate = new Date(
+          releaseDateParts[0],
+          releaseDateParts[1] - 1,
+          releaseDateParts[2]
+        );
+
         return releaseDate >= today;
       }
       return true;
     },
     {
-      message:
-        'Para filmes pendentes, a data de lançamento não pode ser no passado',
+      message: 'Para filmes pendentes, a data de lançamento deve ser futura',
       path: ['releaseDate'],
     }
   )
@@ -106,7 +131,7 @@ export const useCreateMovieForm = (onClose: () => void) => {
       revenue: formatCurrencyMask(''),
       releaseDate: '',
       duration: '',
-      popularity: '',
+      popularity: formatCurrencyMask(''),
       trailerUrl: '',
       status: 'RELEASED',
       language: '',
@@ -130,14 +155,16 @@ export const useCreateMovieForm = (onClose: () => void) => {
   };
 
   const onSubmit = async (data: CreateMovieFormData) => {
+    const releaseDate = new Date(`${data.releaseDate}T03:00:00.000Z`);
+
     const movieData: CreateMovieArgs = {
       title: data.title,
       originalTitle: data.originalTitle,
       subtitle: data.subtitle ?? '',
       synopsis: data.synopsis,
-      budget: parseCurrencyToNumber(data.budget),
-      revenue: parseCurrencyToNumber(data.revenue),
-      releaseDate: data.releaseDate,
+      budget: formatStringToNumber(data.budget),
+      revenue: formatStringToNumber(data.revenue),
+      releaseDate: releaseDate.toISOString(),
       duration: convertTimeToMinutes(data.duration),
       popularity: formatStringToNumber(data.popularity),
       trailerUrl: data.trailerUrl ?? '',

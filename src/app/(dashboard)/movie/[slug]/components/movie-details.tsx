@@ -10,6 +10,7 @@ import { MovieFinances } from './movie-finances';
 import { MovieTrailer } from './movie-trailer';
 import { MovieSkeleton } from './movie-skeleton';
 import { useRouter } from 'next/navigation';
+import { formatReducedNumber } from '@/utils/format-reduced-number';
 
 interface MovieDetailsProps {
   movieId: string;
@@ -74,7 +75,9 @@ const MovieDetails = ({ movieId }: MovieDetailsProps) => {
               totalVotes={movie.votesAverage.totalVotes}
               averageScore={movie.votesAverage.averageScore}
               subtitle={movie.subtitle || ''}
-              popularity={movie.popularity ?? '0'}
+              popularity={formatReducedNumber(
+                movie.popularity?.toString() ?? '0'
+              )}
             />
 
             <div className="flex flex-col xl:flex-row gap-6">

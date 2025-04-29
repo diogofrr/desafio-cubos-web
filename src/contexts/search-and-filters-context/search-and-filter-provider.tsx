@@ -15,7 +15,6 @@ const SearchAndFilterProvider = ({
 }: SearchAndFilterProviderProps) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  // Funções de dispatch para cada ação do reducer
   const changeSearchQuery = (query: string) => {
     dispatch({
       type: actions.CHANGE_SEARCH_QUERY,

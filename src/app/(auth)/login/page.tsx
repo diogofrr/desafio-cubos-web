@@ -1,7 +1,8 @@
 'use client';
 
 import { Button } from '@/components/button';
-import Icon from '@/components/icon';
+import View from '@/components/icons/view';
+import ViewHide from '@/components/icons/view-hide';
 import { Input } from '@/components/input';
 import { Link } from '@/components/link';
 
@@ -59,7 +60,7 @@ export default function Login() {
               className="cursor-pointer"
               disabled={isPending}
             >
-              <Icon name={passwordIsVisible ? 'view-hide' : 'view'} />
+              {passwordIsVisible ? <ViewHide /> : <View />}
             </button>
           }
           errorMessage={errors.password?.message}

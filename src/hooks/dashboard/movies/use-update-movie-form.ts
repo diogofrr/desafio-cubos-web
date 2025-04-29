@@ -14,14 +14,8 @@ import {
   convertMinutesToTime,
   convertTimeToMinutes,
 } from '@/utils/format-hours-mask';
-import {
-  formatCurrencyMask,
-  parseCurrencyToNumber,
-} from '@/utils/format-currency-mask';
-import {
-  formatStringToNumber,
-  formatNumberToDisplayString,
-} from '@/utils/format-string-to-number';
+import { formatCurrencyMask } from '@/utils/format-currency-mask';
+import { formatStringToNumber } from '@/utils/format-string-to-number';
 import { useMovieDetails } from '@/hooks/movie/use-movie-details';
 
 const fileSizeLimit = 2 * 1024 * 1024;
@@ -67,17 +61,44 @@ export const updateMovieSchema = z
   })
   .refine(
     (data) => {
-      if (data.status === 'PENDING') {
+      if (data.status === 'RELEASED') {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
-        const releaseDate = new Date(data.releaseDate);
-        return releaseDate >= today;
+        const releaseDateParts = data.releaseDate.split('-').map(Number);
+        const releaseDate = new Date(
+          releaseDateParts[0],
+          releaseDateParts[1] - 1,
+          releaseDateParts[2]
+        );
+
+        return releaseDate < today;
       }
       return true;
     },
     {
       message:
-        'Para filmes pendentes, a data de lançamento não pode ser no passado',
+        'Para filmes lançados, a data de lançamento deve ser no passado.',
+      path: ['releaseDate'],
+    }
+  )
+  .refine(
+    (data) => {
+      if (data.status === 'PENDING') {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const releaseDateParts = data.releaseDate.split('-').map(Number);
+        const releaseDate = new Date(
+          releaseDateParts[0],
+          releaseDateParts[1] - 1,
+          releaseDateParts[2]
+        );
+
+        return releaseDate >= today;
+      }
+      return true;
+    },
+    {
+      message: 'Para filmes pendentes, a data de lançamento deve ser futura',
       path: ['releaseDate'],
     }
   )
@@ -116,6 +137,8 @@ export const useUpdateMovieForm = ({
     enabled: false,
   });
 
+  console.log(new Date(movie.releaseDate).toISOString().split('T')[0]);
+
   const form = useForm<UpdateMovieFormData>({
     resolver: zodResolver(updateMovieSchema),
     defaultValues: {
@@ -127,9 +150,7 @@ export const useUpdateMovieForm = ({
       revenue: formatCurrencyMask(movie.revenue),
       releaseDate: new Date(movie.releaseDate).toISOString().split('T')[0],
       duration: convertMinutesToTime(movie.duration),
-      popularity: movie.popularity
-        ? formatNumberToDisplayString(movie.popularity)
-        : '',
+      popularity: movie.popularity ? formatCurrencyMask(movie.popularity) : '',
       trailerUrl: movie.trailerUrl || '',
       status: movie.status as 'RELEASED' | 'CANCELLED' | 'PENDING',
       language: movie.languageId,
@@ -153,15 +174,17 @@ export const useUpdateMovieForm = ({
   };
 
   const onSubmit = async (data: UpdateMovieFormData) => {
+    const releaseDate = new Date(`${data.releaseDate}T03:00:00.000Z`);
+
     const movieData: UpdateMovieArgs = {
       id: movie.id,
       title: data.title,
       originalTitle: data.originalTitle,
       subtitle: data.subtitle ?? '',
       synopsis: data.synopsis,
-      budget: parseCurrencyToNumber(data.budget),
-      revenue: parseCurrencyToNumber(data.revenue),
-      releaseDate: data.releaseDate,
+      budget: formatStringToNumber(data.budget),
+      revenue: formatStringToNumber(data.revenue),
+      releaseDate: releaseDate.toISOString(),
       duration: convertTimeToMinutes(data.duration),
       popularity: formatStringToNumber(data.popularity),
       trailerUrl: data.trailerUrl ?? '',
@@ -189,9 +212,7 @@ export const useUpdateMovieForm = ({
       revenue: formatCurrencyMask(movie.revenue),
       releaseDate: new Date(movie.releaseDate).toISOString().split('T')[0],
       duration: convertMinutesToTime(movie.duration),
-      popularity: movie.popularity
-        ? formatNumberToDisplayString(movie.popularity)
-        : '',
+      popularity: movie.popularity ? formatCurrencyMask(movie.popularity) : '',
       trailerUrl: movie.trailerUrl || '',
       status: movie.status as 'RELEASED' | 'CANCELLED' | 'PENDING',
       language: movie.languageId,

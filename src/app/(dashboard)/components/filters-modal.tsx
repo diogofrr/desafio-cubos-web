@@ -6,8 +6,8 @@ import { Button } from '@/components/button';
 import { Input } from '@/components/input';
 import { Select } from '@/components/select';
 import { Checkbox } from '@/components/checkbox';
-import Icon from '@/components/icon';
 import { useFiltersForm } from '@/hooks/dashboard/search-and-filter/use-filters-form';
+import Close from '@/components/icons/close';
 
 interface FiltersModalProps {
   isOpen: boolean;
@@ -48,9 +48,9 @@ const FiltersModal = ({ isOpen, handleClose }: FiltersModalProps) => {
               handleResetValues();
               handleClose();
             }}
-            className="cursor-pointer hover:bg-mauve-9/50 hover:dark:bg-mauve-dark-9/50 rounded-full p-1"
+            className="cursor-pointer hover:bg-mauve-7/50 hover:dark:bg-mauve-dark-9/50 rounded-full p-1"
           >
-            <Icon name="close" />
+            <Close />
           </button>
         </header>
 

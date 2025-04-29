@@ -1,6 +1,6 @@
 import { ReactNode, useEffect } from 'react';
-import Icon from './icon';
 import { Button } from './button';
+import Close from './icons/close';
 
 interface SideModalProps {
   children: ReactNode;
@@ -91,10 +91,10 @@ const SideModal = ({
             </h2>
             <button
               onClick={onClose}
-              className="p-2 cursor-pointer rounded-full hover:bg-mauve-5 dark:hover:bg-mauve-dark-5 transition-colors"
+              className="p-2 cursor-pointer rounded-full hover:bg-mauve-5 dark:hover:bg-mauve-dark-5 text-mauve-9 dark:text-mauve-dark-9 transition-colors"
               aria-label="Fechar"
             >
-              <Icon name="close" />
+              <Close />
             </button>
           </div>
 

@@ -6,11 +6,11 @@ import Image from 'next/image';
 import { Input } from '@/components/input';
 import { Select } from '@/components/select';
 import { Textarea } from '@/components/textarea';
-import Icon from '@/components/icon';
 
 import { formatCurrencyMask } from '@/utils/format-currency-mask';
-import { formatStringToNumber } from '@/utils/format-string-to-number';
 import { GenresList } from '../genre-list';
+import Close from '@/components/icons/close';
+import Upload from '@/components/icons/upload';
 
 interface MovieFormFieldsProps {
   imagePreview: string | null;
@@ -59,16 +59,16 @@ export const MovieFormFields = ({
                     form.trigger('image');
                   }}
                   disabled={isSubmitting}
-                  className="absolute cursor-pointer top-2 right-2 bg-mauve-12 dark:bg-mauve-dark-12 text-white p-1 rounded-full"
+                  className="absolute cursor-pointer top-2 right-2 bg-purple-alpha-3 dark:bg-purple-dark-alpha-2 hover:bg-purple-alpha-4 dark:hover:bg-purple-dark-alpha-3 text-purple-alpha-12 dark:text-purple-dark-alpha-12 p-1 rounded-full"
                 >
-                  <Icon name="close" />
+                  <Close />
                 </button>
               </div>
             ) : (
               <label
                 className={`flex flex-col items-center justify-center w-full h-full ${isSubmitting ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
               >
-                <Icon name="upload" />
+                <Upload />
                 <span className="mt-2 text-sm text-mauve-11 dark:text-mauve-dark-11">
                   Clique para fazer upload
                 </span>
@@ -167,12 +167,12 @@ export const MovieFormFields = ({
               id="budget"
               label="Orçamento (opcional)"
               type="text"
-              placeholder="$ 1000,00"
+              placeholder="$ 10,000,00"
               {...form.register('budget')}
               disabled={isSubmitting}
               onChange={(e) => {
                 const formattedValue = formatCurrencyMask(e.target.value);
-                form.setValue('budget', formattedValue);
+                form.setValue('budget', `$ ${formattedValue}`);
               }}
               errorMessage={form.formState?.errors?.budget?.message?.toString()}
             />
@@ -180,12 +180,12 @@ export const MovieFormFields = ({
               id="revenue"
               label="Receita (opcional)"
               type="text"
-              placeholder="$500.000,00"
+              placeholder="$ 500,000,000"
               {...form.register('revenue')}
               disabled={isSubmitting}
               onChange={(e) => {
                 const formattedValue = formatCurrencyMask(e.target.value);
-                form.setValue('revenue', formattedValue);
+                form.setValue('revenue', `$ ${formattedValue}`);
               }}
               errorMessage={form.formState?.errors?.revenue?.message?.toString()}
             />
@@ -198,7 +198,7 @@ export const MovieFormFields = ({
             {...form.register('popularity')}
             disabled={isSubmitting}
             onChange={(e) => {
-              const formattedValue = formatStringToNumber(e.target.value);
+              const formattedValue = formatCurrencyMask(e.target.value);
               form.setValue('popularity', formattedValue);
             }}
             errorMessage={form.formState?.errors?.popularity?.message?.toString()}

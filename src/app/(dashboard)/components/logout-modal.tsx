@@ -1,5 +1,5 @@
 import { Button } from '@/components/button';
-import Icon from '@/components/icon';
+import Close from '@/components/icons/close';
 import { Modal } from '@/components/modal';
 import { useSession } from '@/hooks/auth/use-session';
 
@@ -22,7 +22,7 @@ const LogoutModal = ({ isOpen, handleClose }: LogoutModalProps) => {
           onClick={handleClose}
           className="cursor-pointer hover:bg-mauve-9/50 hover:dark:bg-mauve-dark-9/50 rounded-full p-1"
         >
-          <Icon name="close" />
+          <Close />
         </button>
       </header>
       <p className="font-functional text-lg font-normal text-mauve-12 dark:text-mauve-dark-12 mb-6">

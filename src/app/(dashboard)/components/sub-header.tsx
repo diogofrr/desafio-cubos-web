@@ -1,10 +1,11 @@
 'use client';
 
-import { Button } from '@/components/button';
-import Icon from '@/components/icon';
-import { Input } from '@/components/input';
-import { useSearchAndFilter } from '@/hooks/dashboard/search-and-filter/use-search-and-filter';
 import { useModal } from '@/hooks/use-modal';
+import { useSearchAndFilter } from '@/hooks/dashboard/search-and-filter/use-search-and-filter';
+
+import { Button } from '@/components/button';
+import { Input } from '@/components/input';
+import Search from '@/components/icons/search';
 import FiltersModal from './filters-modal';
 import { CreateMovieModal } from './create-movie-modal';
 
@@ -28,7 +29,7 @@ export default function SubHeader() {
           placeholder="Pesquise por filmes"
           id="moviesSearch"
           onChange={(e) => handleSearchContent(e.target.value)}
-          rightIcon={<Icon name="search" />}
+          rightIcon={<Search />}
           containerClassName="w-full md:max-w-[488px]"
         />
         <div className="flex flex-row items-center justify-end gap-[2px] sm:gap-[10px] w-full sm:w-auto">

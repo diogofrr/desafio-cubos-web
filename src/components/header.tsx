@@ -8,7 +8,9 @@ import { useTheme } from '@/hooks/use-theme';
 import { LogoutModal } from '@/app/(dashboard)/components/logout-modal';
 import { Button } from '@/components/button';
 import { Cubos } from '@/components/cubos';
-import Icon from '@/components/icon';
+
+import Sun from './icons/sun';
+import Moon from './icons/moon';
 
 interface HeaderProps {
   showLogoutButton?: boolean;
@@ -35,10 +37,10 @@ const Header = ({ showLogoutButton = false, className }: HeaderProps) => {
         <div className="flex flex-row items-center justify-center gap-2">
           <Button variant="secondary" onClick={changeTheme}>
             <span className="hidden dark:block">
-              <Icon name="sun" />
+              <Sun />
             </span>
             <span className="block dark:hidden">
-              <Icon name="moon" />
+              <Moon />
             </span>
           </Button>
           {showLogoutButton && (
