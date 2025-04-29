@@ -55,8 +55,9 @@ export function useRegister() {
       },
       onError: (error) => {
         toast.error('Erro ao realizar cadastro', {
-          description: error.message,
+          description: requestsMessages.auth.register.error,
         });
+        console.error(error);
       },
     });
   };

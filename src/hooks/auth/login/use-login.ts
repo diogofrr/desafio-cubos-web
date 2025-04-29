@@ -39,8 +39,9 @@ const useLogin = () => {
       },
       onError: (error) => {
         toast.error('Erro ao realizar login', {
-          description: error.message,
+          description: requestsMessages.auth.login.error,
         });
+        console.error(error.message);
       },
     });
   };
