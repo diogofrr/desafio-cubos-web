@@ -54,7 +54,7 @@ export default function CardMovie({
 
           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent pt-16 pb-2 transition-all duration-300 ease-out">
             <div className="pointer-events-none flex items-center justify-center">
-              <div className="transform translate-y-4 opacity-0 group-hover:opacity-100 group-hover:translate-y-0 transition-transform duration-300 ease-out pb-[54px]">
+              <div className="transform translate-y-4 opacity-0 group-hover:opacity-100 group-hover:translate-y-0 transition-transform duration-300 ease-out pb-[20px] sm:pb-[54px]">
                 <CircleRating rating={rating} />
               </div>
             </div>
