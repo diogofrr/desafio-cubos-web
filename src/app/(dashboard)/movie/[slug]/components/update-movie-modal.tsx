@@ -3,15 +3,22 @@
 import { FormProvider } from 'react-hook-form';
 
 import { SideModal } from '@/components/side-modal';
-import { useCreateMovieForm } from '@/hooks/dashboard/movies/use-create-movie-form';
-import { MovieFormFields } from './movie-form/movie-form-fields';
+import { useUpdateMovieForm } from '@/hooks/dashboard/movies/use-update-movie-form';
+import { MovieFormFields } from '@/app/(dashboard)/components/movie-form/movie-form-fields';
 
-interface CreateMovieModalProps {
+import { Movie } from '@/types/movies/get-movie-info';
+
+interface UpdateMovieModalProps {
   isOpen: boolean;
   handleClose: () => void;
+  movie: Movie;
 }
 
-const CreateMovieModal = ({ handleClose, isOpen }: CreateMovieModalProps) => {
+const UpdateMovieModal = ({
+  handleClose,
+  isOpen,
+  movie,
+}: UpdateMovieModalProps) => {
   const {
     form,
     imagePreview,
@@ -22,7 +29,7 @@ const CreateMovieModal = ({ handleClose, isOpen }: CreateMovieModalProps) => {
     isSubmitting,
     genres,
     languages,
-  } = useCreateMovieForm(handleClose);
+  } = useUpdateMovieForm({ movie, onClose: handleClose });
 
   return (
     <FormProvider {...form}>
@@ -33,9 +40,9 @@ const CreateMovieModal = ({ handleClose, isOpen }: CreateMovieModalProps) => {
           handleClose();
           resetForm();
         }}
-        title="Adicionar Filme"
+        title="Editar Filme"
         secondaryActionLabel="Cancelar"
-        primaryActionLabel={'Adicionar filme'}
+        primaryActionLabel="Salvar alterações"
         onPrimaryAction={onSubmit}
         isPrimaryLoading={isSubmitting}
         isSecondaryDisabled={isSubmitting}
@@ -53,4 +60,4 @@ const CreateMovieModal = ({ handleClose, isOpen }: CreateMovieModalProps) => {
   );
 };
 
-export { CreateMovieModal };
+export { UpdateMovieModal };

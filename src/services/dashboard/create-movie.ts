@@ -39,9 +39,6 @@ export default async function createMovie(args: CreateMovieArgs) {
     throw new Error(parsedData.message || requestsMessages.auth.login.error);
   }
 
-  console.log('parsedData', parsedData);
-  console.log('image', image);
-
   await uploadImage({ id: parsedData.result, image });
 
   return parsedData;

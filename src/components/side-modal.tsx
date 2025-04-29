@@ -57,11 +57,11 @@ const SideModal = ({
   if (!isOpen) return null;
 
   const widthClasses = {
-    sm: 'sm:w-1/4',
-    md: 'sm:w-1/3',
-    lg: 'sm:w-1/2',
-    xl: 'sm:w-2/3',
-    full: 'sm:w-full',
+    sm: 'sm:w-2/3 md:w-1/2 lg:w-2/5 xl:w-1/3',
+    md: 'sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-2/5',
+    lg: 'sm:w-4/5 md:w-3/4 lg:w-2/3 xl:w-1/2',
+    xl: 'sm:w-5/6 md:w-4/5 lg:w-3/4 xl:w-2/3',
+    full: 'w-full',
   };
 
   const handleSecondaryAction = () => {

@@ -24,6 +24,7 @@ export default async function updateMovie(args: UpdateMovieArgs) {
     method: 'PATCH',
     headers: {
       Authorization: `Bearer ${authToken}`,
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(data),
     redirect: 'follow',

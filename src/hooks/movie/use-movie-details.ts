@@ -2,22 +2,13 @@
 
 import { useQuery } from '@tanstack/react-query';
 import getMovie from '@/services/dashboard/get-movie';
-import { Movie } from '@/types/movies/get-movie-info';
 
 interface UseMovieDetailsProps {
   movieId: string;
+  enabled?: boolean;
 }
 
-interface UseMovieDetailsReturn {
-  movie: Movie | null;
-  isLoading: boolean;
-  isError: boolean;
-  error: Error | null;
-}
-
-const useMovieDetails = ({
-  movieId,
-}: UseMovieDetailsProps): UseMovieDetailsReturn => {
+const useMovieDetails = ({ movieId, enabled = true }: UseMovieDetailsProps) => {
   const fetchMovieDetails = async () => {
     const response = await getMovie(movieId);
 
@@ -33,17 +24,19 @@ const useMovieDetails = ({
     isLoading,
     isError,
     error,
+    refetch: refetchMovie,
   } = useQuery({
     queryKey: ['movie', movieId],
     queryFn: fetchMovieDetails,
-    staleTime: 1000 * 60 * 5, // 5 minutos
-    enabled: !!movieId,
+    staleTime: 1000 * 60 * 5,
+    enabled: !!movieId || enabled,
   });
 
   return {
     movie: movie || null,
     isLoading,
     isError,
+    refetchMovie,
     error: error as Error | null,
   };
 };

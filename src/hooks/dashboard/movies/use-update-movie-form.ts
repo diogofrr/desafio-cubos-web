@@ -2,24 +2,31 @@
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useFetchCreateMovie } from './use-fetch-create-movie';
+import { useFetchUpdateMovie } from './use-fetch-update-movie';
 import { useSelects } from '@/hooks/dashboard/selects/use-selects';
 
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { CreateMovieArgs, MovieStatus } from '@/types/movies/create-movie';
-import { convertTimeToMinutes } from '@/utils/format-hours-mask';
+import { UpdateMovieArgs } from '@/types/movies/update-movie';
+import { Movie } from '@/types/movies/get-movie-info';
+import {
+  convertMinutesToTime,
+  convertTimeToMinutes,
+} from '@/utils/format-hours-mask';
 import {
   formatCurrencyMask,
   parseCurrencyToNumber,
 } from '@/utils/format-currency-mask';
-import { formatStringToNumber } from '@/utils/format-string-to-number';
-import { useSearchAndFilter } from '../search-and-filter/use-search-and-filter';
+import {
+  formatStringToNumber,
+  formatNumberToDisplayString,
+} from '@/utils/format-string-to-number';
+import { useMovieDetails } from '@/hooks/movie/use-movie-details';
 
 const fileSizeLimit = 2 * 1024 * 1024;
 
-export const createMovieSchema = z
+export const updateMovieSchema = z
   .object({
     title: z.string().nonempty({ message: 'Título é obrigatório' }),
     originalTitle: z
@@ -55,7 +62,8 @@ export const createMovieSchema = z
       )
       .refine((file) => file.size <= fileSizeLimit, {
         message: 'O arquivo não pode exceder 2MB',
-      }),
+      })
+      .optional(),
   })
   .refine(
     (data) => {
@@ -87,30 +95,45 @@ export const createMovieSchema = z
     }
   );
 
-export type CreateMovieFormData = z.infer<typeof createMovieSchema>;
+export type UpdateMovieFormData = z.infer<typeof updateMovieSchema>;
 
-export const useCreateMovieForm = (onClose: () => void) => {
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const createMovieMutation = useFetchCreateMovie();
-  const { handleFetchMovies } = useSearchAndFilter();
+interface UseUpdateMovieFormProps {
+  movie: Movie;
+  onClose: () => void;
+}
+
+export const useUpdateMovieForm = ({
+  movie,
+  onClose,
+}: UseUpdateMovieFormProps) => {
+  const [imagePreview, setImagePreview] = useState<string | null>(
+    movie.imageUrl
+  );
+  const updateMovieMutation = useFetchUpdateMovie();
   const { genres, languages } = useSelects();
+  const { refetchMovie } = useMovieDetails({
+    movieId: movie.id,
+    enabled: false,
+  });
 
-  const form = useForm<CreateMovieFormData>({
-    resolver: zodResolver(createMovieSchema),
+  const form = useForm<UpdateMovieFormData>({
+    resolver: zodResolver(updateMovieSchema),
     defaultValues: {
-      title: '',
-      originalTitle: '',
-      subtitle: '',
-      synopsis: '',
-      budget: formatCurrencyMask(''),
-      revenue: formatCurrencyMask(''),
-      releaseDate: '',
-      duration: '',
-      popularity: '',
-      trailerUrl: '',
-      status: 'RELEASED',
-      language: '',
-      genreIds: [],
+      title: movie.title,
+      originalTitle: movie.originalTitle,
+      subtitle: movie.subtitle || '',
+      synopsis: movie.synopsis,
+      budget: formatCurrencyMask(movie.budget),
+      revenue: formatCurrencyMask(movie.revenue),
+      releaseDate: new Date(movie.releaseDate).toISOString().split('T')[0],
+      duration: convertMinutesToTime(movie.duration),
+      popularity: movie.popularity
+        ? formatNumberToDisplayString(movie.popularity)
+        : '',
+      trailerUrl: movie.trailerUrl || '',
+      status: movie.status as 'RELEASED' | 'CANCELLED' | 'PENDING',
+      language: movie.languageId,
+      genreIds: movie.genres.map((genre) => genre.id),
     },
   });
 
@@ -129,8 +152,9 @@ export const useCreateMovieForm = (onClose: () => void) => {
     setImagePreview(null);
   };
 
-  const onSubmit = async (data: CreateMovieFormData) => {
-    const movieData: CreateMovieArgs = {
+  const onSubmit = async (data: UpdateMovieFormData) => {
+    const movieData: UpdateMovieArgs = {
+      id: movie.id,
       title: data.title,
       originalTitle: data.originalTitle,
       subtitle: data.subtitle ?? '',
@@ -141,25 +165,39 @@ export const useCreateMovieForm = (onClose: () => void) => {
       duration: convertTimeToMinutes(data.duration),
       popularity: formatStringToNumber(data.popularity),
       trailerUrl: data.trailerUrl ?? '',
-      status: data.status as unknown as MovieStatus,
+      status: data.status,
       language: data.language,
       genres: data.genreIds ?? [],
       image: data.image,
     };
 
-    createMovieMutation.mutate(movieData, {
+    updateMovieMutation.mutate(movieData, {
       onSuccess: () => {
-        form.reset();
-        setImagePreview(null);
         onClose();
-        handleFetchMovies();
+        refetchMovie();
       },
     });
   };
 
   const resetForm = () => {
-    form.reset();
-    handleClearImage();
+    form.reset({
+      title: movie.title,
+      originalTitle: movie.originalTitle,
+      subtitle: movie.subtitle || '',
+      synopsis: movie.synopsis,
+      budget: formatCurrencyMask(movie.budget),
+      revenue: formatCurrencyMask(movie.revenue),
+      releaseDate: new Date(movie.releaseDate).toISOString().split('T')[0],
+      duration: convertMinutesToTime(movie.duration),
+      popularity: movie.popularity
+        ? formatNumberToDisplayString(movie.popularity)
+        : '',
+      trailerUrl: movie.trailerUrl || '',
+      status: movie.status as 'RELEASED' | 'CANCELLED' | 'PENDING',
+      language: movie.languageId,
+      genreIds: movie.genres.map((genre) => genre.id),
+    });
+    setImagePreview(movie.imageUrl);
   };
 
   return {
@@ -169,7 +207,7 @@ export const useCreateMovieForm = (onClose: () => void) => {
     handleClearImage,
     onSubmit: form.handleSubmit(onSubmit),
     resetForm,
-    isSubmitting: createMovieMutation.isPending,
+    isSubmitting: updateMovieMutation.isPending,
     genres,
     languages,
   };

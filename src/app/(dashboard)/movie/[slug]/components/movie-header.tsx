@@ -1,6 +1,8 @@
 import { DeleteModal } from '@/app/(dashboard)/components/delete-modal';
 import { Button } from '@/components/button';
 import { useModal } from '@/hooks/use-modal';
+import { UpdateMovieModal } from './update-movie-modal';
+import { useMovieDetails } from '@/hooks/movie/use-movie-details';
 
 interface MovieHeaderProps {
   id: string;
@@ -14,6 +16,14 @@ const MovieHeader = ({ id, title, originalTitle }: MovieHeaderProps) => {
     handleClose: handleCloseDeleteModal,
     handleOpen: handleOpenDeleteModal,
   } = useModal();
+
+  const {
+    isOpen: updateModalIsOpen,
+    handleClose: handleCloseUpdateModal,
+    handleOpen: handleOpenUpdateModal,
+  } = useModal();
+
+  const { movie } = useMovieDetails({ movieId: id });
 
   return (
     <div className="flex flex-col gap-4 lg:flex-row lg:justify-between lg:items-center">
@@ -36,7 +46,11 @@ const MovieHeader = ({ id, title, originalTitle }: MovieHeaderProps) => {
         >
           Deletar
         </Button>
-        <Button variant="primary" className="flex-[2] lg:flex-auto">
+        <Button
+          variant="primary"
+          className="flex-[2] lg:flex-auto"
+          onClick={handleOpenUpdateModal}
+        >
           Editar
         </Button>
       </div>
@@ -46,6 +60,14 @@ const MovieHeader = ({ id, title, originalTitle }: MovieHeaderProps) => {
         isOpen={deleteModalIsOpen}
         handleClose={handleCloseDeleteModal}
       />
+
+      {movie && (
+        <UpdateMovieModal
+          movie={movie}
+          isOpen={updateModalIsOpen}
+          handleClose={handleCloseUpdateModal}
+        />
+      )}
     </div>
   );
 };
