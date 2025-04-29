@@ -31,7 +31,7 @@ const MovieDetails = ({ movieId }: MovieDetailsProps) => {
   return (
     <>
       <section className="relative m-4 p-0 md:m-8 md:p-8 flex flex-col gap-6">
-        <div className="hidden lg:block absolute inset-0 bg-mauve-3/30 dark:bg-mauve-dark-3/30 -z-10 h-[90%]"></div>
+        <div className="hidden lg:block absolute inset-0 bg-purple-alpha-3 dark:bg-purple-dark-alpha-1 -z-10 h-[90%]"></div>
 
         <div className="lg:hidden flex justify-center">
           {movie.imageUrl !== '' ? (
