@@ -7,28 +7,28 @@ import { useAuthContext } from '@/hooks/context/use-auth-context';
 import { getSession } from '@/lib/session';
 
 interface SessionLoaderProps {
-	children: ReactNode;
+  children: ReactNode;
 }
 
 const SessionLoader = ({ children }: SessionLoaderProps) => {
-	const { handleLogout } = useSession();
-	const { saveUserData } = useAuthContext();
+  const { handleLogout } = useSession();
+  const { saveUserData } = useAuthContext();
 
-	const handleSaveUserData = useCallback(async () => {
-		const userData = await getSession();
+  const handleSaveUserData = useCallback(async () => {
+    const userData = await getSession();
 
-		if (!userData) {
-			await handleLogout();
-		} else {
-			saveUserData(userData);
-		}
-	}, [handleLogout, saveUserData]);
+    if (!userData) {
+      await handleLogout();
+    } else {
+      saveUserData(userData);
+    }
+  }, [handleLogout, saveUserData]);
 
-	useEffect(() => {
-		handleSaveUserData();
-	}, []);
+  useEffect(() => {
+    handleSaveUserData();
+  }, []);
 
-	return <>{children}</>;
+  return <>{children}</>;
 };
 
 export { SessionLoader };
