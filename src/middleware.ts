@@ -28,7 +28,7 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/', request.url));
   }
 
-  if (pathname === '/') {
+  if (pathname !== '/login' && pathname !== '/register') {
     if (!jwtCookie) {
       return NextResponse.redirect(new URL('/login', request.url));
     }
