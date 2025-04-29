@@ -15,14 +15,14 @@
     "react/react-in-jsx-scope": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "prettier/prettier": [
-      "error",
+      "warn",
       {
         "semi": true,
         "singleQuote": true,
         "tabWidth": 2,
-        "printWidth": 80,
+        "useTabs": false,
         "trailingComma": "es5",
-        "endOfLine": "lf"
+        "printWidth": 80
       }
     ]
   }
