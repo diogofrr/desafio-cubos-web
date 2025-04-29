@@ -13,7 +13,7 @@ const DeleteModal = ({ id, isOpen, handleClose }: DeleteModalProps) => {
   const deleteMovie = useDeleteMovie();
 
   return (
-    <Modal isOpen={isOpen}>
+    <Modal isOpen={isOpen} isFullScreen={false}>
       <header className="flex flex-row items-center justify-between text-mauve-11 dark:text-mauve-dark-11 mb-4">
         <h2 className="text-xl sm:text-2xl font-normal font-functional">
           Deletar filme
