@@ -137,8 +137,6 @@ export const useUpdateMovieForm = ({
     enabled: false,
   });
 
-  console.log(new Date(movie.releaseDate).toISOString().split('T')[0]);
-
   const form = useForm<UpdateMovieFormData>({
     resolver: zodResolver(updateMovieSchema),
     defaultValues: {
